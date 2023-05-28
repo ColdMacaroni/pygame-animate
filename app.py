@@ -27,27 +27,40 @@ class App:
 
     def new_frame(self):
         """Inserts a new frame after the one we're viewing"""
+        self.stop_drawing()
         self.frames.insert(self.frame_idx + 1, Canvas(self.size))
         self.frame_idx += 1
 
     def del_frame(self):
         """Deletes the currently viewed frame"""
+        self.stop_drawing()
+
         self.frames.pop(self.frame_idx)
 
         self.frame_idx = max(0, self.frame_idx - 1)
 
     def next_frame(self):
         """Switches to the next frame, loops around"""
+        self.stop_drawing()
+
         self.frame_idx += 1
         self.frame_idx %= len(self.frames)
 
     def prev_frame(self):
         """Switches to the previous frame, loops around"""
+        self.stop_drawing()
+
         self.frame_idx -= 1
         self.frame_idx %= len(self.frames)
 
     def draw(self, pos: tuple[int, int]):
-        self.frame.draw(pos, self.brush, self.brush_color)
+        self.frame.draw(pos, self.brush_color)
+
+    def start_drawing(self):
+        self.frame.start_drawing(self.brush)
+
+    def stop_drawing(self):
+        self.frame.stop_drawing()
 
     def get_onion_stack(self, layers: int) -> list[Surface]:
         """Returns onion layers.

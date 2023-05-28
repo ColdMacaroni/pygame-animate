@@ -59,12 +59,14 @@ def main():
                     running = False
 
                 case pygame.MOUSEBUTTONDOWN:
+                    app.start_drawing()
                     # Left click
                     if e.button == 1:
                         dragging = True
 
                 case pygame.MOUSEBUTTONUP:
                     # Left click
+                    app.stop_drawing()
                     if e.button == 1:
                         dragging = False
 

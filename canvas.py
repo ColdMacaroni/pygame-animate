@@ -41,6 +41,11 @@ class Canvas:
         self.width, self.height = size
         self.colorkey = colorkey
 
+        # For connecting each point drawn
+        self.prev_spot = None
+        self.drawing = False
+        self.brush_size = None
+
         self.surface = Surface(size)
         self.surface.set_colorkey(colorkey)
         self.surface.fill(colorkey)
@@ -48,11 +53,34 @@ class Canvas:
     def draw(
         self,
         pos,
-        brush_size: BrushSize,
         color: Color = Color(0x00, 0x00, 0x00),
     ):
         """Draws a circle at the given position, with all the stuff"""
-        pygame.draw.circle(self.surface, color, pos, brush_size.size())
+        assert (
+            self.drawing and self.brush_size is not None
+        ), "Attempted to draw without starting drawing"
+
+        if self.prev_spot is not None:
+            pygame.draw.line(
+                self.surface,
+                color,
+                self.prev_spot,
+                pos,
+                self.brush_size.size() * 2,
+            )
+
+        self.prev_spot = pos
+
+    def start_drawing(self, brush_size: BrushSize):
+        """Start connecting between the dots"""
+        self.prev_spot = None
+        self.drawing = True
+        self.brush_size = brush_size
+
+    def stop_drawing(self):
+        self.prev_spot = None
+        self.drawing = False
+        self.brush_size = None
 
     def save(self, fn: str):
         """Save the surface to the given file"""
