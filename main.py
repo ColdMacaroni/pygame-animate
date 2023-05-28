@@ -1,6 +1,7 @@
 from typing import Iterable
 from app import App
 import pygame
+import time
 
 # Size of the window
 size = (600, 480)
@@ -43,8 +44,9 @@ def main():
     onion_layers = 5
     onion_stack = []
 
-    # Determines whether the mouse is being dragged and thus is drawing
-    dragging = False
+    # If the animation is playing
+    playing = False
+    prev_time = time.time()
 
     animation_fps = 24
     update_fps = animation_fps * 2.5
@@ -59,19 +61,17 @@ def main():
                     running = False
 
                 case pygame.MOUSEBUTTONDOWN:
-                    app.start_drawing()
-                    # Left click
                     if e.button == 1:
-                        dragging = True
+                        app.start_drawing()
+                    # Left click
 
                 case pygame.MOUSEBUTTONUP:
                     # Left click
-                    app.stop_drawing()
                     if e.button == 1:
-                        dragging = False
+                        app.stop_drawing()
 
                 case pygame.MOUSEMOTION:
-                    if dragging:
+                    if app.frame.drawing and not playing:
                         app.draw(e.pos)
                         update_surface(surf, onion_stack, app.frame.surface, bg)
 
@@ -107,6 +107,13 @@ def main():
                             app.frame.clear()
                             update_surface(surf, onion_stack, app.frame.surface, bg)
 
+                        case pygame.K_p | pygame.K_SPACE:
+                            app.stop_drawing()
+                            playing = not playing
+
+        if playing and prev_time + (1/animation_fps) <= time.time():
+            app.next_frame()
+            update_surface(surf, [], app.frame.surface, bg)
 
         screen.blit(surf, (0, 0))
 
