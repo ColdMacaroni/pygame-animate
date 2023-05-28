@@ -78,9 +78,14 @@ class Canvas:
         self.brush_size = brush_size
 
     def stop_drawing(self):
+        """Stop connecting between the dots"""
         self.prev_spot = None
         self.drawing = False
         self.brush_size = None
+
+    def clear(self):
+        """Clears the surface"""
+        self.surface.fill(self.colorkey)
 
     def save(self, fn: str):
         """Save the surface to the given file"""

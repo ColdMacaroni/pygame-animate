@@ -40,7 +40,7 @@ def main():
     bg = pygame.Color(0xFF, 0xFF, 0xFF)
     update_surface(surf, [], app.frame.surface, bg)
 
-    onion_layers = 3
+    onion_layers = 5
     onion_stack = []
 
     # Determines whether the mouse is being dragged and thus is drawing
@@ -75,9 +75,12 @@ def main():
                         app.draw(e.pos)
                         update_surface(surf, onion_stack, app.frame.surface, bg)
 
-                # TODO! Move all these onion updates to a function
                 case pygame.KEYUP:
                     match e.key:
+                        case pygame.K_s:
+                            app.stop_drawing()
+                            app.save("out")
+                        # TODO! Move all these onion updates to a function
                         case pygame.K_PERIOD:
                             app.next_frame()
                             onion_stack = app.get_onion_stack(onion_layers)
@@ -98,6 +101,12 @@ def main():
                                 app.del_frame()
                                 onion_stack = app.get_onion_stack(onion_layers)
                                 update_surface(surf, onion_stack, app.frame.surface, bg)
+
+                        case pygame.K_c | pygame.K_DELETE:
+                            app.stop_drawing()
+                            app.frame.clear()
+                            update_surface(surf, onion_stack, app.frame.surface, bg)
+
 
         screen.blit(surf, (0, 0))
 
