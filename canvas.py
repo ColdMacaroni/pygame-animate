@@ -62,11 +62,9 @@ class Canvas:
         """Returns a surface to be blitted as an onion layer. Unsure of the actual term"""
         surf = self.surface.copy()
 
-        # Replace pixels that have been drawn on with the given colour.
-        for x in range(self.width):
-            for y in range(self.height):
-                if surf.get_at((x, y)) != self.colorkey:
-                    surf.set_at((x, y), color)
+        pygame.transform.threshold(
+            surf, self.surface, search_color=self.colorkey, set_color=color
+        )
 
         surf.set_alpha(trans)
         return surf
