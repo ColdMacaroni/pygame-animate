@@ -2,6 +2,7 @@ from typing import Iterable
 from app import App
 import pygame
 import time
+from sys import argv
 
 # Size of the window
 size = (600, 480)
@@ -48,8 +49,13 @@ def main():
     playing = False
     prev_time = time.time()
 
-    animation_fps = 24
-    update_fps = animation_fps * 2.5
+    animation_fps = 12
+
+    # Set fps from arg if possible
+    if len(argv) > 1:
+        animation_fps = int(argv[1])
+
+    update_fps = max(animation_fps * 2.5, 60)
 
     running = True
     while running:
@@ -119,10 +125,11 @@ def main():
                             app.stop_drawing()
                             app.brush = app.brush.prev()
 
-
-        if playing and prev_time + (1/animation_fps) <= time.time():
+        if playing and time.time() - prev_time >= 1/animation_fps:
             app.next_frame()
             update_surface(surf, [], app.frame.surface, bg)
+            
+            prev_time = time.time()
 
         screen.blit(surf, (0, 0))
 
