@@ -1,6 +1,7 @@
 from pygame import Color, Surface
 from canvas import *
 import os
+from sys import stderr
 
 
 class App:
@@ -93,7 +94,8 @@ class App:
         return stack
 
     def save(self, folder: str) -> None:
-        os.mkdir(folder)
+        if not os.path.exists(folder):
+            os.mkdir(folder)
 
         for i in range(len(self.frames)):
             # TODO! Find a more extensible way of numbering the images
