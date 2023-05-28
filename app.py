@@ -34,6 +34,8 @@ class App:
         """Deletes the currently viewed frame"""
         self.frames.pop(self.frame_idx)
 
+        self.frame_idx = max(0, self.frame_idx - 1)
+
     def next_frame(self):
         """Switches to the next frame, loops around"""
         self.frame_idx += 1

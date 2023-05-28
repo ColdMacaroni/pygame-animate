@@ -73,6 +73,7 @@ def main():
                         app.draw(e.pos)
                         update_surface(surf, onion_stack, app.frame.surface, bg)
 
+                # TODO! Move all these onion updates to a function
                 case pygame.KEYUP:
                     match e.key:
                         case pygame.K_PERIOD:
@@ -93,6 +94,8 @@ def main():
                         case pygame.K_d:
                             if len(app.frames) > 1:
                                 app.del_frame()
+                                onion_stack = app.get_onion_stack(onion_layers)
+                                update_surface(surf, onion_stack, app.frame.surface, bg)
 
         screen.blit(surf, (0, 0))
 
