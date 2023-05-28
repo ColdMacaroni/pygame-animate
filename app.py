@@ -1,4 +1,4 @@
-from pygame import Color
+from pygame import Color, Surface
 from canvas import *
 import os
 
@@ -47,7 +47,7 @@ class App:
     def draw(self, pos: tuple[int, int]):
         self.frame.draw(pos, self.brush, self.brush_color)
 
-    def get_frame_stack(self, layers: int) -> list[Canvas]:
+    def get_frame_stack(self, layers: int) -> list[Surface]:
         """Returns the frame and onion layers.
         layers refers to how many forward, how many backward."""
 
@@ -76,11 +76,11 @@ class App:
             onion_append(i, next_onion)
 
         # Add current layer last so it's not covered by the others
-        stack.append(self.frame)
+        stack.append(self.frame.surface)
 
         return stack
 
-    def save(self, folder: str):
+    def save(self, folder: str) -> None:
         os.mkdir(folder)
 
         for i in range(len(self.frames)):
