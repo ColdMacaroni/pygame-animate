@@ -47,20 +47,20 @@ class App:
     def draw(self, pos: tuple[int, int]):
         self.frame.draw(pos, self.brush, self.brush_color)
 
-    def get_frame_stack(self, layers: int) -> list[Surface]:
-        """Returns the frame and onion layers.
+    def get_onion_stack(self, layers: int) -> list[Surface]:
+        """Returns onion layers.
         layers refers to how many forward, how many backward."""
 
         stack = []
-        prev_onion = Color(0xAE, 0x85, 0xFF)
-        next_onion = Color(0x4D, 0xA7, 0x53)
+        prev_onion = Color(0x67, 0x13, 0x15)
+        next_onion = Color(0x13, 0x50, 0x1F)
 
         # Inner function because i don't want to repeat myself
         def onion_append(idx: int, color: Color):
             """Adds the frame at that index to the stack, calculating alpha"""
             # Increase opacity as we get closer to the current layer,
             # but don't go full 0 or 255
-            alpha = 20 + 200 * (self.frame_idx - idx) / layers
+            alpha = 240 - 140 * (abs(self.frame_idx - idx)) / layers
 
             stack.append(self.frames[idx].get_onion(color, round(alpha)))
 
@@ -74,9 +74,6 @@ class App:
             min(len(self.frames), self.frame_idx + layers + 1),
         ):
             onion_append(i, next_onion)
-
-        # Add current layer last so it's not covered by the others
-        stack.append(self.frame.surface)
 
         return stack
 
