@@ -75,7 +75,7 @@ class App:
             """Adds the frame at that index to the stack, calculating alpha"""
             # Increase opacity as we get closer to the current layer,
             # but don't go full 0 or 255
-            alpha = 240 - 140 * (abs(self.frame_idx - idx)) / layers
+            alpha = 200 - 180 * (abs(self.frame_idx - idx)) / layers
 
             stack.append(self.frames[idx].get_onion(color, round(alpha)))
 
