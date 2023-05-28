@@ -43,6 +43,7 @@ class Canvas:
 
         self.surface = Surface(size)
         self.surface.set_colorkey(colorkey)
+        self.surface.fill(colorkey)
 
     def draw(
         self,
