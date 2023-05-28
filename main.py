@@ -111,6 +111,15 @@ def main():
                             app.stop_drawing()
                             playing = not playing
 
+                        case pygame.K_PLUS | pygame.K_KP_PLUS | pygame.K_EQUALS:
+                            app.stop_drawing()
+                            app.brush = app.brush.next()
+
+                        case pygame.K_MINUS | pygame.K_KP_MINUS:
+                            app.stop_drawing()
+                            app.brush = app.brush.prev()
+
+
         if playing and prev_time + (1/animation_fps) <= time.time():
             app.next_frame()
             update_surface(surf, [], app.frame.surface, bg)

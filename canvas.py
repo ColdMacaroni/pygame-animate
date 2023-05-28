@@ -14,6 +14,7 @@ class BrushSize(Enum):
         match self:
             case self.SMALL:
                 return 1
+
             case self.MEDIUM:
                 return 2
 
@@ -27,11 +28,21 @@ class BrushSize(Enum):
 
     def next(self):
         """Gets the next bigger size"""
-        return self.order[(self.order.index(self) + 1) % len(self.order)]
+        idx = self.order.index(self)
+        
+        if idx < len(self.order) - 1:
+            idx += 1
+
+        return self.order[idx]
 
     def prev(self):
         """Gets the next smaller size"""
-        return self.order[(self.order.index(self) - 1) % len(self.order)]
+        idx = self.order.index(self)
+        
+        if idx > 0:
+            idx -= 1
+
+        return self.order[idx]
 
 
 class Canvas:
